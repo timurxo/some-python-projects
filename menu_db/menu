@@ -1,0 +1,31 @@
+import sqlite3
+
+db = sqlite3.connect("menu.sqlite")
+
+db.execute("CREATE TABLE IF NOT EXISTS menu(dish TEXT, side TEXT, price INTEGER)")
+db.execute("INSERT INTO menu(dish, side, price) VALUES ('pizza', 'fries', 3)")
+db.execute("INSERT INTO menu(dish, side, price) VALUES ('burger', 'coke', 5)")
+db.execute("INSERT INTO menu(dish, side, price) VALUES ('hot dog', 'cheese', 2)")
+db.execute("INSERT INTO menu(dish, side, price) VALUES ('cake', 'tea', 8)")
+db.execute("INSERT INTO menu(dish, side, price) VALUES ('pie', 'ketchup', 6)")
+
+# ========================= update db =================
+new_side = "whatever"
+dish = "hot dog"
+
+update_menu = "UPDATE menu SET side = ? WHERE dish = ?"
+cursor = db.cursor()
+cursor.execute(update_menu, (new_side, dish))
+cursor.connection.commit()
+cursor.close()
+# ====================================================
+
+for dish, side, price in db.execute("SELECT * FROM menu"):
+    print(dish)
+    print(side)
+    print(price)
+    print("*" * 30)
+
+
+db.commit()
+db.close()
